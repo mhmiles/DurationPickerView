@@ -9,7 +9,11 @@
 import UIKit
 
 public class DurationPickerView: UIPickerView {
-    var duration: NSTimeInterval = 0.0
+    var duration: NSTimeInterval = 0.0 {
+        didSet {
+            reloadAllComponents()
+        }
+    }
     
     weak public var durationDelegate: DurationPickerViewDelegate?
     
@@ -66,14 +70,13 @@ extension DurationPickerView: UIPickerViewDataSource {
         if duration > 0 {
             return min(3, Int(log(Float(duration))/log(60.0))+1)
         } else {
-            return 0
+            return 1
         }
     }
     
     public func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        let componentUnit = pow(Float(60), Float(pickerView.numberOfComponents-component-1))
+        let componentUnit = pow(Float(60), Float(numberOfComponentsInPickerView(self)-component-1))
         
-        let duration = self.duration ?? 0
         return Int(min(ceilf(Float(duration)/componentUnit)+1, 60.0))
     }
 }
