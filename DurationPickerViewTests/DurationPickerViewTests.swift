@@ -33,53 +33,50 @@ class DurationPickerViewTests: XCTestCase {
     }
     
     func testSubMinuteDurationNumberOfComponents() {
-        durationPickerView.duration = 30
+        durationPickerView.maximumDuration = 30
         
         XCTAssertEqual(durationPickerView.numberOfComponentsInPickerView(durationPickerView), 1)
     }
     
     func testSubMinuteDurationNumberOfRows() {
-        durationPickerView.duration = 30
+        durationPickerView.maximumDuration = 30
         
         XCTAssertEqual(durationPickerView.pickerView(durationPickerView, numberOfRowsInComponent: 0), 31)
     }
     
     func testMinuteDurationNumberOfComponents() {
-        durationPickerView.duration = 60
+        durationPickerView.maximumDuration = 60
         
         XCTAssertEqual(durationPickerView.numberOfComponentsInPickerView(durationPickerView), 2)
     }
     
     func testMinuteDurationNumberOfRows() {
-        durationPickerView.duration = 60
+        durationPickerView.maximumDuration = 60
         
         XCTAssertEqual(durationPickerView.pickerView(durationPickerView, numberOfRowsInComponent: 0), 2)
-        XCTAssertEqual(durationPickerView.pickerView(durationPickerView, numberOfRowsInComponent: 1), 60)
     }
     
     func testSubHourDurationNumberOfComponents() {
-        durationPickerView.duration = 360
+        durationPickerView.maximumDuration = 360
         XCTAssertEqual(durationPickerView.numberOfComponentsInPickerView(durationPickerView), 2)
     }
     
     func testSubHourDurationNumberOfRows() {
-        durationPickerView.duration = 360
+        durationPickerView.maximumDuration = 360
         
         XCTAssertEqual(durationPickerView.pickerView(durationPickerView, numberOfRowsInComponent: 0), 7)
-        XCTAssertEqual(durationPickerView.pickerView(durationPickerView, numberOfRowsInComponent: 1), 60)
     }
     
     func testHourDurationNumberOfComponents() {
-        durationPickerView.duration = 3600
+        durationPickerView.maximumDuration = 3600
         
         XCTAssertEqual(durationPickerView.numberOfComponentsInPickerView(durationPickerView), 3)
     }
     
     func testHourDurationNumberOfRows() {
-        durationPickerView.duration = 3600
+        durationPickerView.maximumDuration = 3600
 
         XCTAssertEqual(durationPickerView.pickerView(durationPickerView, numberOfRowsInComponent: 0), 2)
-        XCTAssertEqual(durationPickerView.pickerView(durationPickerView, numberOfRowsInComponent: 1), 60)
-        XCTAssertEqual(durationPickerView.pickerView(durationPickerView, numberOfRowsInComponent: 2), 60)
+
     }
 }

@@ -59,7 +59,11 @@ public class DurationPickerView: UIPickerView {
         var selectedDuration = 0.0
         
         for index in 0..<numberOfComponents {
-            selectedDuration += Double(selectedRowInComponent(index)*Int(pow(60.0, Double(numberOfComponents-1-index))))
+            if index == 0 && numberOfComponents == 3{
+                selectedDuration += Double(selectedRowInComponent(index)*Int(pow(60.0, Double(numberOfComponents-1-index))))
+            } else {
+                selectedDuration += Double(selectedRowInComponent(index)%60*Int(pow(60.0, Double(numberOfComponents-1-index))))
+            }
         }
         
         return selectedDuration
@@ -78,17 +82,24 @@ extension DurationPickerView: UIPickerViewDataSource {
     public func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         let componentUnit = pow(Float(60), Float(numberOfComponentsInPickerView(self)-component-1))
         
-        return Int(min(ceilf(Float(maximumDuration)/componentUnit)+1, 60.0))
+        let numberOfRows = Int(min(ceilf(Float(maximumDuration)/componentUnit)+1, 60.0))
+        return numberOfRows < 60 ? numberOfRows : 60*500
     }
 }
 
 extension DurationPickerView: UIPickerViewDelegate {
     public func pickerView(pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusingView view: UIView?) -> UIView {
-        let label = UILabel()
+        let label = view as? UILabel ?? UILabel()
         
         let padding = 3
         
-        var string = String(format:"%d", row)
+        var string = { [unowned self] () -> String in
+            if self.numberOfComponentsInPickerView(self) == 3 && component == 0 { //Dont modulo hours
+                return String(format:"%d", row)
+            } else {
+                return String(format:"%d", row%60)
+            }
+        }()
         
         for _ in 1...padding {
             string += "_"
