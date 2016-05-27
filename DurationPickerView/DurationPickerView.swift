@@ -9,7 +9,7 @@
 import UIKit
 
 public class DurationPickerView: UIPickerView {
-    var duration: NSTimeInterval = 0.0 {
+    public var maximumDuration: NSTimeInterval = 0.0 {
         didSet {
             reloadAllComponents()
         }
@@ -67,8 +67,8 @@ public class DurationPickerView: UIPickerView {
 
 extension DurationPickerView: UIPickerViewDataSource {
     public func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
-        if duration > 0 {
-            return min(3, Int(log(Float(duration))/log(60.0))+1)
+        if maximumDuration > 0 {
+            return min(3, Int(log(Float(maximumDuration))/log(60.0))+1)
         } else {
             return 1
         }
@@ -77,7 +77,7 @@ extension DurationPickerView: UIPickerViewDataSource {
     public func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         let componentUnit = pow(Float(60), Float(numberOfComponentsInPickerView(self)-component-1))
         
-        return Int(min(ceilf(Float(duration)/componentUnit)+1, 60.0))
+        return Int(min(ceilf(Float(maximumDuration)/componentUnit)+1, 60.0))
     }
 }
 
@@ -110,6 +110,10 @@ extension DurationPickerView: UIPickerViewDelegate {
     }
     
     public func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        if selectedDuration > maximumDuration {
+            //TODO: Move to max duration
+        }
+        
         durationDelegate?.pickerView(self, didChangeToValue: selectedDuration)
     }
 }
