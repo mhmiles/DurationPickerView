@@ -11,6 +11,7 @@ import UIKit
 public class DurationPickerView: UIPickerView {
     public var maximumDuration: NSTimeInterval = 0.0 {
         didSet {
+            setNeedsDisplay()
             reloadAllComponents()
         }
     }
