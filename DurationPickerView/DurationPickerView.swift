@@ -8,15 +8,20 @@
 
 import UIKit
 
+private let componentWidth = CGFloat(50.0)
+
 public class DurationPickerView: UIPickerView {
     public var maximumDuration: NSTimeInterval = 0.0 {
         didSet {
             setNeedsDisplay()
             reloadAllComponents()
             
+
             if maximumDuration > 60*60 {
-                selectRow(60*200, inComponent: 1, animated: false)
-                selectRow(60*200, inComponent: 2, animated: false)
+                selectRow(60*500, inComponent: 1, animated: false)
+                selectRow(60*500, inComponent: 2, animated: false)
+            } else if maximumDuration > 60 {
+                selectRow(60*500, inComponent: 1, animated: false)
             }
         }
     }
@@ -32,7 +37,7 @@ public class DurationPickerView: UIPickerView {
     
     public override func drawRect(rect: CGRect) {
         let center = CGPointMake(self.bounds.width/2, self.bounds.height/2)
-        let firstLabelTranslation = CGAffineTransformMakeTranslation(-CGFloat(numberOfComponents)/2.0*50.0+30.0, -8.0) // Move left half of width - 30.0, up 8.0
+        let firstLabelTranslation = CGAffineTransformMakeTranslation(-CGFloat(numberOfComponents)/2.0*componentWidth+30.0, -8.0) // Move left half of width - 30.0, up 8.0
         let firstLabelLeft = CGPointApplyAffineTransform(center, firstLabelTranslation)
         
         
@@ -88,7 +93,7 @@ extension DurationPickerView: UIPickerViewDataSource {
         let componentUnit = pow(Float(60), Float(numberOfComponentsInPickerView(self)-component-1))
         
         let numberOfRows = Int(min(ceilf(Float(maximumDuration)/componentUnit)+1, 60.0))
-        return numberOfRows < 60 ? numberOfRows : 60*500
+        return numberOfRows < 60 ? numberOfRows : 60*1000
     }
 }
 
@@ -123,7 +128,7 @@ extension DurationPickerView: UIPickerViewDelegate {
     }
     
     public func pickerView(pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
-        return 50.0
+        return componentWidth
     }
     
     public func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
