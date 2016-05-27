@@ -13,6 +13,11 @@ public class DurationPickerView: UIPickerView {
         didSet {
             setNeedsDisplay()
             reloadAllComponents()
+            
+            if maximumDuration > 60*60 {
+                selectRow(60*200, inComponent: 1, animated: false)
+                selectRow(60*200, inComponent: 2, animated: false)
+            }
         }
     }
     
