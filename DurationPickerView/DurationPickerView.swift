@@ -134,15 +134,15 @@ extension DurationPickerView: UIPickerViewDelegate {
     public func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if selectedDuration > maximumDuration {
             let componentPlaceValue = placeValueForComponent(component)
-            let targetRow = Int(selectedDuration)%(componentPlaceValue*60)/componentPlaceValue
+            let targetRow = Int(maximumDuration)%(componentPlaceValue*60)/componentPlaceValue
             var overshoot = row%60-targetRow
-            
-            if overshoot>30 {
-                overshoot-=60
-            }
             
             if Int(selectedDuration) - overshoot*componentPlaceValue > Int(maximumDuration) {
                 overshoot-=1 // reduce by 1 in case component to the right is too high
+            }
+            
+            if overshoot>30 {
+                overshoot-=60 // make negative to select closest row
             }
             
             selectRow(row-overshoot, inComponent: component, animated: true)
