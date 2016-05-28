@@ -133,7 +133,19 @@ extension DurationPickerView: UIPickerViewDelegate {
     
     public func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if selectedDuration > maximumDuration {
-            //TODO: Move to max duration
+            let componentUnit = Int(pow(Float(60), Float(numberOfComponentsInPickerView(self)-component-1)))
+            var targetRow = Int(selectedDuration)%(componentUnit*60)/componentUnit
+            let overshoot = row%60-targetRow
+            
+            if overshoot>30 {
+                targetRow+=60
+            }
+            
+            if Int(selectedDuration) - overshoot*componentUnit > Int(maximumDuration) {
+                targetRow-=1 // reduce by 1 in case component to the right is too high
+            }
+            
+            selectRow(targetRow+row/60, inComponent: component, animated: true)
         }
         
         durationDelegate?.pickerView(self, didChangeToValue: selectedDuration)
