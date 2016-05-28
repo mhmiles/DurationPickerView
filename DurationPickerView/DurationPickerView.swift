@@ -90,9 +90,9 @@ extension DurationPickerView: UIPickerViewDataSource {
     }
     
     public func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        let componentUnit = pow(Float(60), Float(numberOfComponentsInPickerView(self)-component-1))
+        let componentPlaceValue = Float(placeValueForComponent(component))
         
-        let numberOfRows = Int(min(ceilf(Float(maximumDuration)/componentUnit), 60.0))
+        let numberOfRows = Int(min(ceilf(Float(maximumDuration)/componentPlaceValue), 60.0))
         return numberOfRows < 60 ? numberOfRows : 60*1000
     }
 }
@@ -133,22 +133,26 @@ extension DurationPickerView: UIPickerViewDelegate {
     
     public func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if selectedDuration > maximumDuration {
-            let componentUnit = Int(pow(Float(60), Float(numberOfComponentsInPickerView(self)-component-1)))
-            var targetRow = Int(selectedDuration)%(componentUnit*60)/componentUnit
-            let overshoot = row%60-targetRow
+            let componentPlaceValue = placeValueForComponent(component)
+            let targetRow = Int(selectedDuration)%(componentPlaceValue*60)/componentPlaceValue
+            var overshoot = row%60-targetRow
             
             if overshoot>30 {
-                targetRow+=60
+                overshoot-=60
             }
             
-            if Int(selectedDuration) - overshoot*componentUnit > Int(maximumDuration) {
-                targetRow-=1 // reduce by 1 in case component to the right is too high
+            if Int(selectedDuration) - overshoot*componentPlaceValue > Int(maximumDuration) {
+                overshoot-=1 // reduce by 1 in case component to the right is too high
             }
             
-            selectRow(targetRow+row/60, inComponent: component, animated: true)
+            selectRow(row-overshoot, inComponent: component, animated: true)
         }
         
         durationDelegate?.pickerView(self, didChangeToValue: selectedDuration)
+    }
+    
+    private func placeValueForComponent(component: Int) -> Int {
+        return Int(pow(Float(60), Float(numberOfComponentsInPickerView(self)-component-1)))
     }
 }
 
