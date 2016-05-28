@@ -92,7 +92,7 @@ extension DurationPickerView: UIPickerViewDataSource {
     public func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         let componentUnit = pow(Float(60), Float(numberOfComponentsInPickerView(self)-component-1))
         
-        let numberOfRows = Int(min(ceilf(Float(maximumDuration)/componentUnit)+1, 60.0))
+        let numberOfRows = Int(min(ceilf(Float(maximumDuration)/componentUnit), 60.0))
         return numberOfRows < 60 ? numberOfRows : 60*1000
     }
 }
