@@ -94,7 +94,7 @@ extension DurationPickerView: UIPickerViewDataSource {
         let componentPlaceValue = placeValueForComponent(component)
         
         let numberOfRows = min(Int(maximumDuration)/componentPlaceValue+1, 60)
-        return numberOfRows < 60 ? numberOfRows : 60*reelRepititions
+        return numberOfRows == 60 && component > 0 ? 60*reelRepititions : numberOfRows
     }
 }
 
@@ -105,12 +105,14 @@ extension DurationPickerView: UIPickerViewDelegate {
         //Pad string with invisible _, spaces or transform on label doesn't work
         let paddingLength = 3
         
-        let string = (self.numberOfComponents == 3 && component == 0 ? // Don't modulo hours
-            String(format:"%d", row) : String(format:"%d", row%60)) + String(count: paddingLength, repeatedValue: ("_" as Character))
+        let rowText = (self.numberOfComponents == 3 && component == 0 ? // Don't modulo hours
+            String(format:"%d", row) : String(format:"%d", row%60))
         
-        let attributedString = NSMutableAttributedString(string: string)
+        let paddedRowText = rowText + String(count: paddingLength, repeatedValue: ("_" as Character))
+        
+        let attributedString = NSMutableAttributedString(string: paddedRowText)
         attributedString.addAttributes([NSForegroundColorAttributeName: UIColor.clearColor()],
-                                       range: NSMakeRange(string.characters.count-paddingLength, paddingLength))
+                                       range: NSMakeRange(paddedRowText.characters.count-paddingLength, paddingLength))
         
         label.attributedText = attributedString
         label.textAlignment = .Right
