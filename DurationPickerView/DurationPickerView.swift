@@ -11,7 +11,7 @@ import UIKit
 private let componentWidth = CGFloat(50.0)
 
 public class DurationPickerView: UIPickerView {
-    public var maximumDuration: NSTimeInterval = 0.0 {
+    public  var  maximumDuration: NSTimeInterval = 0.0 {
         didSet {
             setNeedsDisplay()
 
@@ -89,11 +89,8 @@ public class DurationPickerView: UIPickerView {
 
 extension DurationPickerView: UIPickerViewDataSource {
     public func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
-        if maximumDuration > 0 {
-            return min(3, Int(log(Float(maximumDuration))/log(60.0))+1)
-        } else {
-            return 1
-        }
+        return maximumDuration > 0 ?
+            min(3, Int(log(Float(maximumDuration))/log(60.0))+1) : 1
     }
     
     public func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
@@ -132,7 +129,7 @@ extension DurationPickerView: UIPickerViewDelegate {
     }
     
     public func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        if selectedDuration > maximumDuration {
+        if selectedDuration > maximumDuration { // overshot maximumDuration
             let componentPlaceValue = placeValueForComponent(component)
             let targetRow = Int(maximumDuration)%(componentPlaceValue*60)/componentPlaceValue
             var overshoot = row%60-targetRow
@@ -156,6 +153,6 @@ extension DurationPickerView: UIPickerViewDelegate {
     }
 }
 
-public protocol DurationPickerViewDelegate: class {
+@objc public protocol DurationPickerViewDelegate: class {
     func pickerView(pickerView: DurationPickerView, didChangeToValue value: NSTimeInterval)
 }
