@@ -18,9 +18,9 @@ public class DurationPickerView: UIPickerView {
 
             reloadAllComponents()
             
-            (1..<numberOfComponents).forEach({ (index) in
+            (1..<numberOfComponents).forEach { index in
                 selectRow(60*reelRepititions/2, inComponent: index, animated: false)
-            })
+            }
         }
     }
     
@@ -47,7 +47,6 @@ public class DurationPickerView: UIPickerView {
         let center = CGPointMake(self.bounds.width/2, self.bounds.height/2)
         let firstLabelTranslation = CGAffineTransformMakeTranslation(-CGFloat(numberOfComponents)/2.0*componentWidth+30.0, -8.0) // Move left half of width - 30.0, up 8.0
         let firstLabelLeft = CGPointApplyAffineTransform(center, firstLabelTranslation)
-        
         
         for index in 0..<numberOfComponents {
             var labelText: String?
@@ -103,18 +102,15 @@ extension DurationPickerView: UIPickerViewDelegate {
     public func pickerView(pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusingView view: UIView?) -> UIView {
         let label = view as? UILabel ?? UILabel()
         
-        let padding = 3
+        //Pad string with invisible _, spaces or transform on label doesn't work
+        let paddingLength = 3
         
-        var string = self.numberOfComponents == 3 && component == 0 ? // Don't modulo hours
-            String(format:"%d", row) : String(format:"%d", row%60)
+        let string = (self.numberOfComponents == 3 && component == 0 ? // Don't modulo hours
+            String(format:"%d", row) : String(format:"%d", row%60)) + String(count: paddingLength, repeatedValue: ("_" as Character))
         
-        string += String(count: padding, repeatedValue: ("_" as Character))
-        
-        let attributes = [
-            NSForegroundColorAttributeName: UIColor.clearColor()
-        ]
         let attributedString = NSMutableAttributedString(string: string)
-        attributedString.addAttributes(attributes, range: NSMakeRange(string.characters.count-padding, padding))
+        attributedString.addAttributes([NSForegroundColorAttributeName: UIColor.clearColor()],
+                                       range: NSMakeRange(string.characters.count-paddingLength, paddingLength))
         
         label.attributedText = attributedString
         label.textAlignment = .Right
