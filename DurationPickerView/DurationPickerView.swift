@@ -70,7 +70,7 @@ public class DurationPickerView: UIPickerView {
             let componentPlaceValue = placeValueForComponent(index)
             var row = selectedRowInComponent(index)
             
-            if componentPlaceValue == 60*60 {
+            if componentPlaceValue != 60*60 {
                 row %= 60
             }
             return acc + NSTimeInterval(row*componentPlaceValue)
