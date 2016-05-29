@@ -14,13 +14,15 @@ public class DurationPickerView: UIPickerView {
     public var maximumDuration: NSTimeInterval = 0.0 {
         didSet {
             setNeedsDisplay()
-            reloadAllComponents()
-            
 
-            if maximumDuration > 60*60 {
+            (0..<numberOfComponents).forEach { (component) in
+                self.reloadComponent(component)
+            }
+            
+            if maximumDuration >= 60*60 {
                 selectRow(60*500, inComponent: 1, animated: false)
                 selectRow(60*500, inComponent: 2, animated: false)
-            } else if maximumDuration > 60 {
+            } else if maximumDuration >= 60 {
                 selectRow(60*500, inComponent: 1, animated: false)
             }
         }
@@ -66,17 +68,15 @@ public class DurationPickerView: UIPickerView {
     }
     
     internal var selectedDuration: NSTimeInterval {
-        var selectedDuration = 0.0
-        
-        for index in 0..<numberOfComponents {
-            if index == 0 && numberOfComponents == 3{
-                selectedDuration += Double(selectedRowInComponent(index)*Int(pow(60.0, Double(numberOfComponents-1-index))))
-            } else {
-                selectedDuration += Double(selectedRowInComponent(index)%60*Int(pow(60.0, Double(numberOfComponents-1-index))))
+        return (0..<numberOfComponents).reduce(NSTimeInterval(0.0)) { (acc, index) -> NSTimeInterval in
+            let componentPlaceValue = placeValueForComponent(index)
+            var row = selectedRowInComponent(index)
+            
+            if componentPlaceValue == 60*60 {
+                row %= 60
             }
+            return acc + NSTimeInterval(row*componentPlaceValue)
         }
-        
-        return selectedDuration
     }
 }
 
@@ -90,9 +90,9 @@ extension DurationPickerView: UIPickerViewDataSource {
     }
     
     public func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        let componentPlaceValue = Float(placeValueForComponent(component))
+        let componentPlaceValue = placeValueForComponent(component)
         
-        let numberOfRows = Int(min(ceilf(Float(maximumDuration)/componentPlaceValue), 60.0))
+        let numberOfRows = min(Int(maximumDuration)/componentPlaceValue+1, 60)
         return numberOfRows < 60 ? numberOfRows : 60*1000
     }
 }
