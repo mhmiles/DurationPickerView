@@ -136,7 +136,7 @@ extension DurationPickerView: UIPickerViewDelegate {
             var overshoot = row%60-targetRow
             
             if Int(selectedDuration) - overshoot*componentPlaceValue > Int(maximumDuration) {
-                overshoot-=1 // reduce by 1 in case component to the right is too high
+                overshoot+=1 // increase by 1 in case component to the right is too high
             }
             
             if overshoot>30 {
