@@ -119,4 +119,15 @@ class DurationPickerViewTests: XCTestCase {
         
         XCTAssertEqual(durationPickerView.selectedDuration, 3600)
     }
+    
+    func testOvershootEdgeCase() {
+        durationPickerView.maximumDuration = 3840
+        durationPickerView.selectRow(1, inComponent: 0, animated: false)
+        durationPickerView.selectRow(1, inComponent: 2, animated: false)
+        durationPickerView.selectRow(4, inComponent: 1, animated: false)
+        
+        durationPickerView.pickerView(durationPickerView, didSelectRow: durationPickerView.selectedRowInComponent(1), inComponent: 1)
+        
+        XCTAssertEqual(durationPickerView.selectedDuration, 3781)
+    }
 }
