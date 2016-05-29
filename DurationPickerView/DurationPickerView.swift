@@ -28,9 +28,19 @@ public class DurationPickerView: UIPickerView {
     
     weak public var durationDelegate: DurationPickerViewDelegate?
     
-    public override func awakeFromNib() {
-        super.awakeFromNib()
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         
+        setUp()
+    }
+    
+    required public init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        
+        setUp()
+    }
+    
+    private func setUp() {
         dataSource = self
         delegate = self
     }
@@ -47,7 +57,6 @@ public class DurationPickerView: UIPickerView {
             switch(numberOfComponents-index) {
             case 1:
                 labelText = "s"
-                
             case 2:
                 labelText = "m"
             case 3:

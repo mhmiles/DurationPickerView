@@ -16,8 +16,6 @@ class DurationPickerViewTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        
-        durationPickerView.awakeFromNib()
     }
     
     override func tearDown() {
