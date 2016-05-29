@@ -110,17 +110,10 @@ extension DurationPickerView: UIPickerViewDelegate {
         
         let padding = 3
         
-        var string = { [unowned self] () -> String in
-            if self.numberOfComponents == 3 && component == 0 { //Dont modulo hours
-                return String(format:"%d", row)
-            } else {
-                return String(format:"%d", row%60)
-            }
-        }()
+        var string = self.numberOfComponents == 3 && component == 0 ? // Don't modulo hours
+            String(format:"%d", row) : String(format:"%d", row%60)
         
-        for _ in 1...padding {
-            string += "_"
-        }
+        string += String(count: padding, repeatedValue: ("_" as Character))
         
         let attributes = [
             NSForegroundColorAttributeName: UIColor.clearColor()
