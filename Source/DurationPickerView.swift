@@ -9,6 +9,7 @@
 import UIKit
 
 private let componentWidth = CGFloat(50.0)
+private let reelRepititions = 1000
 
 public class DurationPickerView: UIPickerView {
     public  var  maximumDuration: NSTimeInterval = 0.0 {
@@ -17,12 +18,9 @@ public class DurationPickerView: UIPickerView {
 
             reloadAllComponents()
             
-            if maximumDuration >= 60*60 {
-                selectRow(60*500, inComponent: 1, animated: false)
-                selectRow(60*500, inComponent: 2, animated: false)
-            } else if maximumDuration >= 60 {
-                selectRow(60*500, inComponent: 1, animated: false)
-            }
+            (1..<numberOfComponents).forEach({ (index) in
+                selectRow(60*reelRepititions/2, inComponent: index, animated: false)
+            })
         }
     }
     
@@ -97,7 +95,7 @@ extension DurationPickerView: UIPickerViewDataSource {
         let componentPlaceValue = placeValueForComponent(component)
         
         let numberOfRows = min(Int(maximumDuration)/componentPlaceValue+1, 60)
-        return numberOfRows < 60 ? numberOfRows : 60*1000
+        return numberOfRows < 60 ? numberOfRows : 60*reelRepititions
     }
 }
 
