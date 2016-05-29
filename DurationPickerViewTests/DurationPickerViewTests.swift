@@ -42,7 +42,7 @@ class DurationPickerViewTests: XCTestCase {
     func testSubMinuteDurationNumberOfRows() {
         durationPickerView.maximumDuration = 30
         
-        XCTAssertEqual(durationPickerView.pickerView(durationPickerView, numberOfRowsInComponent: 0), 31)
+        XCTAssertEqual(durationPickerView.numberOfRowsInComponent(0), 31)
     }
     
     func testMinuteDurationNumberOfComponents() {
@@ -54,7 +54,7 @@ class DurationPickerViewTests: XCTestCase {
     func testMinuteDurationNumberOfRows() {
         durationPickerView.maximumDuration = 60
         
-        XCTAssertEqual(durationPickerView.pickerView(durationPickerView, numberOfRowsInComponent: 0), 2)
+        XCTAssertEqual(durationPickerView.numberOfRowsInComponent(0), 2)
     }
     
     func testSubHourDurationNumberOfComponents() {
@@ -65,7 +65,7 @@ class DurationPickerViewTests: XCTestCase {
     func testSubHourDurationNumberOfRows() {
         durationPickerView.maximumDuration = 360
         
-        XCTAssertEqual(durationPickerView.pickerView(durationPickerView, numberOfRowsInComponent: 0), 7)
+        XCTAssertEqual(durationPickerView.numberOfRowsInComponent(0), 7)
     }
     
     func testHourDurationNumberOfComponents() {
@@ -77,7 +77,7 @@ class DurationPickerViewTests: XCTestCase {
     func testHourDurationNumberOfRows() {
         durationPickerView.maximumDuration = 3600
 
-        XCTAssertEqual(durationPickerView.pickerView(durationPickerView, numberOfRowsInComponent: 0), 2)
+        XCTAssertEqual(durationPickerView.numberOfRowsInComponent(0), 2)
 
     }
 }
