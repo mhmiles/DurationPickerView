@@ -16,7 +16,8 @@ class DurationPickerViewTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        
+        durationPickerView.awakeFromNib()
     }
     
     override func tearDown() {
@@ -29,13 +30,13 @@ class DurationPickerViewTests: XCTestCase {
     }
     
     func testZeroDurationNumberOfComponents() {
-        XCTAssertEqual(durationPickerView.numberOfComponentsInPickerView(durationPickerView), 1)
+        XCTAssertEqual(durationPickerView.numberOfComponents, 1)
     }
     
     func testSubMinuteDurationNumberOfComponents() {
         durationPickerView.maximumDuration = 30
         
-        XCTAssertEqual(durationPickerView.numberOfComponentsInPickerView(durationPickerView), 1)
+        XCTAssertEqual(durationPickerView.numberOfComponents, 1)
     }
     
     func testSubMinuteDurationNumberOfRows() {
@@ -47,7 +48,7 @@ class DurationPickerViewTests: XCTestCase {
     func testMinuteDurationNumberOfComponents() {
         durationPickerView.maximumDuration = 60
         
-        XCTAssertEqual(durationPickerView.numberOfComponentsInPickerView(durationPickerView), 2)
+        XCTAssertEqual(durationPickerView.numberOfComponents, 2)
     }
     
     func testMinuteDurationNumberOfRows() {
@@ -58,7 +59,7 @@ class DurationPickerViewTests: XCTestCase {
     
     func testSubHourDurationNumberOfComponents() {
         durationPickerView.maximumDuration = 360
-        XCTAssertEqual(durationPickerView.numberOfComponentsInPickerView(durationPickerView), 2)
+        XCTAssertEqual(durationPickerView.numberOfComponents, 2)
     }
     
     func testSubHourDurationNumberOfRows() {
@@ -70,7 +71,7 @@ class DurationPickerViewTests: XCTestCase {
     func testHourDurationNumberOfComponents() {
         durationPickerView.maximumDuration = 3600
         
-        XCTAssertEqual(durationPickerView.numberOfComponentsInPickerView(durationPickerView), 3)
+        XCTAssertEqual(durationPickerView.numberOfComponents, 3)
     }
     
     func testHourDurationNumberOfRows() {

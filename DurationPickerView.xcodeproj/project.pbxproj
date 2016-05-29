@@ -28,7 +28,7 @@
 		020BA1711CF76C4C0059AF61 /* DurationPickerView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DurationPickerView.h; sourceTree = "<group>"; };
 		020BA1731CF76C4C0059AF61 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		020BA1781CF76C4C0059AF61 /* DurationPickerViewTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DurationPickerViewTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		020BA17D1CF76C4C0059AF61 /* DurationPickerViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DurationPickerViewTests.swift; sourceTree = "<group>"; };
+		020BA17D1CF76C4C0059AF61 /* DurationPickerViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = DurationPickerViewTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		020BA17F1CF76C4C0059AF61 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		020BA1881CF76C550059AF61 /* DurationPickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DurationPickerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */

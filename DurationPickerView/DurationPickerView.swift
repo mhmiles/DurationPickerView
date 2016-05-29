@@ -15,9 +15,7 @@ public class DurationPickerView: UIPickerView {
         didSet {
             setNeedsDisplay()
 
-            (0..<numberOfComponents).forEach { (component) in
-                self.reloadComponent(component)
-            }
+            reloadAllComponents()
             
             if maximumDuration >= 60*60 {
                 selectRow(60*500, inComponent: 1, animated: false)
@@ -104,7 +102,7 @@ extension DurationPickerView: UIPickerViewDelegate {
         let padding = 3
         
         var string = { [unowned self] () -> String in
-            if self.numberOfComponentsInPickerView(self) == 3 && component == 0 { //Dont modulo hours
+            if self.numberOfComponents == 3 && component == 0 { //Dont modulo hours
                 return String(format:"%d", row)
             } else {
                 return String(format:"%d", row%60)
@@ -152,7 +150,7 @@ extension DurationPickerView: UIPickerViewDelegate {
     }
     
     private func placeValueForComponent(component: Int) -> Int {
-        return Int(pow(Float(60), Float(numberOfComponentsInPickerView(self)-component-1)))
+        return Int(pow(Float(60), Float(numberOfComponents-component-1)))
     }
 }
 
