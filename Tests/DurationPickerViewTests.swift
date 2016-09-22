@@ -40,7 +40,7 @@ class DurationPickerViewTests: XCTestCase {
     func testSubMinuteDurationNumberOfRows() {
         durationPickerView.maximumDuration = 30
         
-        XCTAssertEqual(durationPickerView.numberOfRowsInComponent(0), 31)
+        XCTAssertEqual(durationPickerView.numberOfRows(inComponent: 0), 31)
     }
     
     func testSubMinuteDurationSelection() {
@@ -59,7 +59,7 @@ class DurationPickerViewTests: XCTestCase {
     func testMinuteDurationNumberOfRows() {
         durationPickerView.maximumDuration = 60
         
-        XCTAssertEqual(durationPickerView.numberOfRowsInComponent(0), 2)
+        XCTAssertEqual(durationPickerView.numberOfRows(inComponent: 0), 2)
     }
     
     func testMinuteDurationSelection() {
@@ -78,7 +78,7 @@ class DurationPickerViewTests: XCTestCase {
     func testSubHourDurationNumberOfRows() {
         durationPickerView.maximumDuration = 360
         
-        XCTAssertEqual(durationPickerView.numberOfRowsInComponent(0), 7)
+        XCTAssertEqual(durationPickerView.numberOfRows(inComponent: 0), 7)
     }
     
     func testSubHourDurationSelection() {
@@ -98,7 +98,7 @@ class DurationPickerViewTests: XCTestCase {
     func testHourDurationNumberOfRows() {
         durationPickerView.maximumDuration = 3600
 
-        XCTAssertEqual(durationPickerView.numberOfRowsInComponent(0), 2)
+        XCTAssertEqual(durationPickerView.numberOfRows(inComponent: 0), 2)
     }
     
     func testHourDurationSelection() {
@@ -115,7 +115,7 @@ class DurationPickerViewTests: XCTestCase {
         durationPickerView.selectRow(1, inComponent: 0, animated: false)
         durationPickerView.selectRow(60*600+4, inComponent: 1, animated: false)
         
-        durationPickerView.pickerView(durationPickerView, didSelectRow: durationPickerView.selectedRowInComponent(1), inComponent: 1)
+        durationPickerView.pickerView(durationPickerView, didSelectRow: durationPickerView.selectedRow(inComponent: 1), inComponent: 1)
         
         XCTAssertEqual(durationPickerView.selectedDuration, 3600)
     }
@@ -126,7 +126,7 @@ class DurationPickerViewTests: XCTestCase {
         durationPickerView.selectRow(1, inComponent: 2, animated: false)
         durationPickerView.selectRow(4, inComponent: 1, animated: false)
         
-        durationPickerView.pickerView(durationPickerView, didSelectRow: durationPickerView.selectedRowInComponent(1), inComponent: 1)
+        durationPickerView.pickerView(durationPickerView, didSelectRow: durationPickerView.selectedRow(inComponent: 1), inComponent: 1)
         
         XCTAssertEqual(durationPickerView.selectedDuration, 3781)
     }

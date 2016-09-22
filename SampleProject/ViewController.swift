@@ -22,7 +22,7 @@ class ViewController: UIViewController {
 }
 
 extension ViewController: DurationPickerViewDelegate {
-    func pickerView(pickerView: DurationPickerView, didChangeToValue value: NSTimeInterval) {
+    func pickerView(_ pickerView: DurationPickerView, didChangeToValue value: TimeInterval) {
         selectedDurationLabel.text = String(Int(value))
     }
 }

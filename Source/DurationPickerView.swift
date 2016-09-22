@@ -11,8 +11,8 @@ import UIKit
 private let componentWidth = CGFloat(50.0)
 private let reelRepititions = 1000
 
-public class DurationPickerView: UIPickerView {
-    public  var  maximumDuration: NSTimeInterval = 0.0 {
+open class DurationPickerView: UIPickerView {
+    open  var  maximumDuration: TimeInterval = 0.0 {
         didSet {
             setNeedsDisplay()
 
@@ -24,7 +24,7 @@ public class DurationPickerView: UIPickerView {
         }
     }
     
-    weak public var durationDelegate: DurationPickerViewDelegate?
+    weak open var durationDelegate: DurationPickerViewDelegate?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -38,15 +38,15 @@ public class DurationPickerView: UIPickerView {
         setUp()
     }
     
-    private func setUp() {
+    fileprivate func setUp() {
         dataSource = self
         delegate = self
     }
     
-    public override func drawRect(rect: CGRect) {
-        let center = CGPointMake(self.bounds.width/2, self.bounds.height/2)
-        let firstLabelTranslation = CGAffineTransformMakeTranslation(-CGFloat(numberOfComponents)/2.0*componentWidth+30.0, -8.0) // Move left half of width - 30.0, up 8.0
-        let firstLabelLeft = CGPointApplyAffineTransform(center, firstLabelTranslation)
+    open override func draw(_ rect: CGRect) {
+        let center = CGPoint(x: self.bounds.width/2, y: self.bounds.height/2)
+        let firstLabelTranslation = CGAffineTransform(translationX: -CGFloat(numberOfComponents)/2.0*componentWidth+30.0, y: -8.0) // Move left half of width - 30.0, up 8.0
+        let firstLabelLeft = center.applying(firstLabelTranslation)
         
         for index in 0..<numberOfComponents {
             var labelText: String?
@@ -63,34 +63,34 @@ public class DurationPickerView: UIPickerView {
                 print("Unhandled label")
             }
             
-            let labelLeft = CGPointApplyAffineTransform(firstLabelLeft, CGAffineTransformMakeTranslation(55.0*CGFloat(index), 0.0))
+            let labelLeft = firstLabelLeft.applying(CGAffineTransform(translationX: 55.0*CGFloat(index), y: 0.0))
             
-            labelText?.drawAtPoint(labelLeft, withAttributes: [
-                NSFontAttributeName: UIFont.systemFontOfSize(14.0, weight: UIFontWeightSemibold),
+            labelText?.draw(at: labelLeft, withAttributes: [
+                NSFontAttributeName: UIFont.systemFont(ofSize: 14.0, weight: UIFontWeightSemibold),
                 ])
         }
     }
     
-    internal var selectedDuration: NSTimeInterval {
-        return (0..<numberOfComponents).reduce(NSTimeInterval(0.0)) { (acc, index) -> NSTimeInterval in
+    internal var selectedDuration: TimeInterval {
+        return (0..<numberOfComponents).reduce(TimeInterval(0.0)) { (acc, index) -> TimeInterval in
             let componentPlaceValue = placeValueForComponent(index)
-            var row = selectedRowInComponent(index)
+            var row = selectedRow(inComponent: index)
             
             if componentPlaceValue != 60*60 {
                 row %= 60
             }
-            return acc + NSTimeInterval(row*componentPlaceValue)
+            return acc + TimeInterval(row*componentPlaceValue)
         }
     }
 }
 
 extension DurationPickerView: UIPickerViewDataSource {
-    public func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+    public func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return maximumDuration > 0 ?
             min(3, Int(log(Float(maximumDuration))/log(60.0))+1) : 1
     }
     
-    public func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+    public func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         let componentPlaceValue = placeValueForComponent(component)
         
         let numberOfRows = min(Int(maximumDuration)/componentPlaceValue+1, 60)
@@ -99,7 +99,7 @@ extension DurationPickerView: UIPickerViewDataSource {
 }
 
 extension DurationPickerView: UIPickerViewDelegate {
-    public func pickerView(pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusingView view: UIView?) -> UIView {
+    public func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
         let label = view as? UILabel ?? UILabel()
         
         //Pad string with invisible _, spaces or transform on label doesn't work
@@ -108,23 +108,23 @@ extension DurationPickerView: UIPickerViewDelegate {
         let rowText = (self.numberOfComponents == 3 && component == 0 ? // Don't modulo hours
             String(format:"%d", row) : String(format:"%d", row%60))
         
-        let paddedRowText = rowText + String(count: paddingLength, repeatedValue: ("_" as Character))
+        let paddedRowText = rowText + String(repeating: String(("_" as Character)), count: paddingLength)
         
         let attributedString = NSMutableAttributedString(string: paddedRowText)
-        attributedString.addAttributes([NSForegroundColorAttributeName: UIColor.clearColor()],
+        attributedString.addAttributes([NSForegroundColorAttributeName: UIColor.clear],
                                        range: NSMakeRange(paddedRowText.characters.count-paddingLength, paddingLength))
         
         label.attributedText = attributedString
-        label.textAlignment = .Right
+        label.textAlignment = .right
         
         return label
     }
     
-    public func pickerView(pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
+    public func pickerView(_ pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
         return componentWidth
     }
     
-    public func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+    public func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if selectedDuration > maximumDuration { // overshot maximumDuration
             let componentPlaceValue = placeValueForComponent(component)
             let targetRow = Int(maximumDuration)%(componentPlaceValue*60)/componentPlaceValue
@@ -144,11 +144,11 @@ extension DurationPickerView: UIPickerViewDelegate {
         durationDelegate?.pickerView(self, didChangeToValue: selectedDuration)
     }
     
-    private func placeValueForComponent(component: Int) -> Int {
+    fileprivate func placeValueForComponent(_ component: Int) -> Int {
         return Int(pow(Float(60), Float(numberOfComponents-component-1)))
     }
 }
 
 @objc public protocol DurationPickerViewDelegate: class {
-    func pickerView(pickerView: DurationPickerView, didChangeToValue value: NSTimeInterval)
+    func pickerView(_ pickerView: DurationPickerView, didChangeToValue value: TimeInterval)
 }
