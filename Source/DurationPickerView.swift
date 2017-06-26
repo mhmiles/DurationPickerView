@@ -66,7 +66,7 @@ open class DurationPickerView: UIPickerView {
             let labelLeft = firstLabelLeft.applying(CGAffineTransform(translationX: 55.0*CGFloat(index), y: 0.0))
             
             labelText?.draw(at: labelLeft, withAttributes: [
-                NSFontAttributeName: UIFont.systemFont(ofSize: 14.0, weight: UIFontWeightSemibold),
+                NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14.0, weight: UIFont.Weight.semibold),
                 ])
         }
     }
@@ -111,7 +111,7 @@ extension DurationPickerView: UIPickerViewDelegate {
         let paddedRowText = rowText + String(repeating: String(("_" as Character)), count: paddingLength)
         
         let attributedString = NSMutableAttributedString(string: paddedRowText)
-        attributedString.addAttributes([NSForegroundColorAttributeName: UIColor.clear],
+        attributedString.addAttributes([NSAttributedStringKey.foregroundColor: UIColor.clear],
                                        range: NSMakeRange(paddedRowText.characters.count-paddingLength, paddingLength))
         
         label.attributedText = attributedString
